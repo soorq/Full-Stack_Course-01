@@ -24,17 +24,19 @@ export class Transaction {
 	@Column()
 	amount: number
 
+	@ManyToOne(() => Category, (category) => category.transaction, {
+		onDelete: 'SET NULL',
+	})
+	@JoinColumn({ name: 'category_id' })
+	category: Category
+
 	@CreateDateColumn()
 	createdAt: Date
 
 	@UpdateDateColumn()
 	updatedAt: Date
 
-	@ManyToOne(() => User, (user) => user.transcations)
+	@ManyToOne(() => User, (user) => user.transcation)
 	@JoinColumn({ name: 'user_id' })
 	user: User
-
-	@ManyToOne(() => Category, (category) => category.transaction)
-	@JoinColumn({ name: 'category_id' })
-	categories: Category
 }

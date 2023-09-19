@@ -17,13 +17,11 @@ export class TransactionService {
 			title: createTransactionDto.title,
 			amount: createTransactionDto.amount,
 			type: createTransactionDto.type,
-			category: {
-				id: +createTransactionDto.category,
-			},
+			category: { id: +createTransactionDto.category },
 			user: { id },
 		}
 		if (!newTranscation) throw new BadRequestException('Smt went wrong')
-
+		console.log(createTransactionDto)
 		return await this.transactionRepository.save(newTranscation)
 	}
 
@@ -35,13 +33,16 @@ export class TransactionService {
 			},
 		})
 		const total = transaction.reduce((acc, obj) => acc + obj.amount, 0)
-
+		console.log(total)
 		return total
 	}
 
 	async findAll(id: number) {
 		const transactions = await this.transactionRepository.find({
 			where: { user: { id } },
+			relations: {
+				category: true,
+			},
 			// Новое  к старому
 			order: {
 				createdAt: 'DESC',
@@ -58,7 +59,7 @@ export class TransactionService {
 			},
 			relations: {
 				user: true,
-				categories: true,
+				category: true,
 			},
 		})
 		if (!transaction) throw new BadRequestException('Doesnt see in db')

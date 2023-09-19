@@ -17,5 +17,5 @@ export class CreateTransactionDto {
 	category: Category
 
 	@IsOptional()
-	user?: User
+	user: User
 }
